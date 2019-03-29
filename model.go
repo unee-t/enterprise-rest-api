@@ -12,42 +12,42 @@ import (
 type person struct {
 	ID                   int            `db:"id_person"`
 	ExternalID           string         `db:"external_id"`
-	ExternalSystem       string         `db:"ExternalSystem"`
-	ExternalTable        string         `db:"ExternalTable"`
-	SystCreatedDatetime  mysql.NullTime `db:"SystCreatedDatetime"`
-	CreationSystemID     sql.NullInt64  `db:"CreationSystemId"`
-	CreatedByID          sql.NullString `db:"CreatedById"`
-	SystUpdatedDatetime  mysql.NullTime `db:"SystUpdatedDatetime"`
-	UpdateSystemID       sql.NullInt64  `db:"UpdateSystemId"`
-	UpdatedByID          sql.NullString `db:"UpdatedById"`
-	PersonStatusID       sql.NullInt64  `db:"PersonStatusId"`
-	DupeID               sql.NullInt64  `db:"DupeId"`
-	HandlerID            sql.NullInt64  `db:"HandlerId"`
-	IsUneeTAccountNeeded sql.NullInt64  `db:"IsUneeTAccountNeeded"`
-	UneeTUserTypeID      sql.NullInt64  `db:"UneeTUserTypeId"`
-	CountryCode          sql.NullString `db:"CountryCode"`
-	Gender               sql.NullInt64  `db:"Gender"`
-	SalutationID         sql.NullInt64  `db:"SalutationId"`
-	GivenName            string         `db:"GivenName"`
-	MiddleName           sql.NullString `db:"MiddleName"`
-	FamilyName           sql.NullString `db:"FamilyName"`
-	DateOfBirth          mysql.NullTime `db:"DateOfBirth"`
-	Alias                sql.NullString `db:"Alias"`
-	JobTitle             sql.NullString `db:"JobTitle"`
-	Organization         sql.NullString `db:"Organization"`
-	Email                sql.NullString `db:"Email"`
-	Tel1                 sql.NullString `db:"Tel1"`
-	Tel2                 sql.NullString `db:"Tel2"`
-	Whatsapp             sql.NullString `db:"Whatsapp"`
-	Linkedin             sql.NullString `db:"Linkedin"`
-	Facebook             sql.NullString `db:"Facebook"`
-	Adr1                 sql.NullString `db:"Adr1"`
-	Adr2                 sql.NullString `db:"Adr2"`
-	Adr3                 sql.NullString `db:"Adr3"`
+	ExternalSystem       string         `db:"external_system"`
+	ExternalTable        string         `db:"external_table"`
+	SystCreatedDatetime  mysql.NullTime `db:"syst_created_datetime"`
+	CreationSystemID     sql.NullInt64  `db:"creation_system_id"`
+	CreatedByID          sql.NullString `db:"created_by_id"`
+	SystUpdatedDatetime  mysql.NullTime `db:"syst_updated_datetime"`
+	UpdateSystemID       sql.NullInt64  `db:"update_system_id"`
+	UpdatedByID          sql.NullString `db:"updated_by_id"`
+	PersonStatusID       sql.NullInt64  `db:"person_status_id"`
+	DupeID               sql.NullInt64  `db:"dupe_id"`
+	HandlerID            sql.NullInt64  `db:"handler_id"`
+	IsUneeTAccountNeeded sql.NullInt64  `db:"is_unee_t_account_needed"`
+	UneeTUserTypeID      sql.NullInt64  `db:"unee_t_user_type_id"`
+	CountryCode          sql.NullString `db:"country_code"`
+	Gender               sql.NullInt64  `db:"gender"`
+	SalutationID         sql.NullInt64  `db:"salutation_id"`
+	GivenName            string         `db:"given_name"`
+	MiddleName           sql.NullString `db:"middle_name"`
+	FamilyName           sql.NullString `db:"family_name"`
+	DateOfBirth          mysql.NullTime `db:"date_of_birth"`
+	Alias                sql.NullString `db:"alias"`
+	JobTitle             sql.NullString `db:"job_title"`
+	Organization         sql.NullString `db:"organization"`
+	Email                sql.NullString `db:"email"`
+	Tel1                 sql.NullString `db:"tel_1"`
+	Tel2                 sql.NullString `db:"tel_2"`
+	Whatsapp             sql.NullString `db:"whatsapp"`
+	Linkedin             sql.NullString `db:"linkedin"`
+	Facebook             sql.NullString `db:"facebook"`
+	Adr1                 sql.NullString `db:"adr1"`
+	Adr2                 sql.NullString `db:"adr2"`
+	Adr3                 sql.NullString `db:"adr3"`
 	City                 sql.NullString `db:"City"`
-	ZipPostcode          sql.NullString `db:"ZipPostcode"`
-	RegionOrState        sql.NullString `db:"RegionOrState"`
-	Country              sql.NullString `db:"Country"`
+	ZipPostcode          sql.NullString `db:"zip_postcode"`
+	RegionOrState        sql.NullString `db:"region_or_state"`
+	Country              sql.NullString `db:"country"`
 }
 
 func (u *person) getperson(db *sqlx.DB) error {
