@@ -24,7 +24,7 @@ type App struct {
 }
 
 func New() (a App, err error) {
-	connectionString := "root:secret@tcp(localhost:3306)/rest_api_example?multiStatements=true&sql_mode=TRADITIONAL&timeout=5s"
+	connectionString := "root:secret@tcp(localhost:3306)/unee_t_enterprise?multiStatements=true&sql_mode=TRADITIONAL&timeout=5s"
 	a.DB, err = sqlx.Open("mysql", connectionString)
 	if err != nil {
 		return a, err
@@ -47,14 +47,14 @@ func New() (a App, err error) {
 }
 
 func (a *App) initializeRoutes() {
-	a.Router.HandleFunc("/users", a.getUsers).Methods("GET")
-	a.Router.HandleFunc("/user", a.createUser).Methods("POST")
-	a.Router.HandleFunc("/user/{id:[0-9]+}", a.getUser).Methods("GET")
-	a.Router.HandleFunc("/user/{id:[0-9]+}", a.updateUser).Methods("PUT")
-	a.Router.HandleFunc("/user/{id:[0-9]+}", a.deleteUser).Methods("DELETE")
+	a.Router.HandleFunc("/persons", a.getpersons).Methods("GET")
+	a.Router.HandleFunc("/person", a.createperson).Methods("POST")
+	a.Router.HandleFunc("/person/{id:[0-9]+}", a.getperson).Methods("GET")
+	a.Router.HandleFunc("/person/{id:[0-9]+}", a.updateperson).Methods("PUT")
+	a.Router.HandleFunc("/person/{id:[0-9]+}", a.deleteperson).Methods("DELETE")
 }
 
-func (a *App) getUsers(w http.ResponseWriter, r *http.Request) {
+func (a *App) getpersons(w http.ResponseWriter, r *http.Request) {
 	count, _ := strconv.Atoi(r.FormValue("count"))
 	startid, _ := strconv.Atoi(r.FormValue("id"))
 
@@ -65,7 +65,7 @@ func (a *App) getUsers(w http.ResponseWriter, r *http.Request) {
 		startid = 0
 	}
 
-	Persons, err := getUsers(a.DB, startid, count)
+	Persons, err := getpersons(a.DB, startid, count)
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
 		return
@@ -74,8 +74,8 @@ func (a *App) getUsers(w http.ResponseWriter, r *http.Request) {
 	respondWithJSON(w, http.StatusOK, Persons)
 }
 
-func (a *App) createUser(w http.ResponseWriter, r *http.Request) {
-	var u user
+func (a *App) createperson(w http.ResponseWriter, r *http.Request) {
+	var u person
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&u); err != nil {
 		respondWithError(w, http.StatusBadRequest, "Invalid request payload")
@@ -83,7 +83,7 @@ func (a *App) createUser(w http.ResponseWriter, r *http.Request) {
 	}
 	defer r.Body.Close()
 
-	if err := u.createUser(a.DB); err != nil {
+	if err := u.createperson(a.DB); err != nil {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -91,19 +91,19 @@ func (a *App) createUser(w http.ResponseWriter, r *http.Request) {
 	respondWithJSON(w, http.StatusCreated, u)
 }
 
-func (a *App) getUser(w http.ResponseWriter, r *http.Request) {
+func (a *App) getperson(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
-		respondWithError(w, http.StatusBadRequest, "Invalid user ID")
+		respondWithError(w, http.StatusBadRequest, "Invalid person ID")
 		return
 	}
 
-	u := user{ID: id}
-	if err := u.getUser(a.DB); err != nil {
+	u := person{ID: id}
+	if err := u.getperson(a.DB); err != nil {
 		switch err {
 		case sql.ErrNoRows:
-			respondWithError(w, http.StatusNotFound, "User not found")
+			respondWithError(w, http.StatusNotFound, "person not found")
 		default:
 			respondWithError(w, http.StatusInternalServerError, err.Error())
 		}
@@ -113,15 +113,15 @@ func (a *App) getUser(w http.ResponseWriter, r *http.Request) {
 	respondWithJSON(w, http.StatusOK, u)
 }
 
-func (a *App) updateUser(w http.ResponseWriter, r *http.Request) {
+func (a *App) updateperson(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
-		respondWithError(w, http.StatusBadRequest, "Invalid user ID")
+		respondWithError(w, http.StatusBadRequest, "Invalid person ID")
 		return
 	}
 
-	var u user
+	var u person
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&u); err != nil {
 		respondWithError(w, http.StatusBadRequest, "Invalid resquest payload")
@@ -130,7 +130,7 @@ func (a *App) updateUser(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 	u.ID = id
 
-	if err := u.updateUser(a.DB); err != nil {
+	if err := u.updateperson(a.DB); err != nil {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -138,16 +138,16 @@ func (a *App) updateUser(w http.ResponseWriter, r *http.Request) {
 	respondWithJSON(w, http.StatusOK, u)
 }
 
-func (a *App) deleteUser(w http.ResponseWriter, r *http.Request) {
+func (a *App) deleteperson(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
-		respondWithError(w, http.StatusBadRequest, "Invalid User ID")
+		respondWithError(w, http.StatusBadRequest, "Invalid person ID")
 		return
 	}
 
-	u := user{ID: id}
-	if err := u.deleteUser(a.DB); err != nil {
+	u := person{ID: id}
+	if err := u.deleteperson(a.DB); err != nil {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
