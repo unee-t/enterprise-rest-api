@@ -3,51 +3,51 @@
 package main
 
 import (
-	"database/sql"
+	"time"
 
 	"github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 )
 
 type person struct {
-	ID                   int            `db:"id_person"`
-	ExternalID           string         `db:"external_id"`
-	ExternalSystem       string         `db:"external_system"`
-	ExternalTable        string         `db:"external_table"`
-	SystCreatedDatetime  mysql.NullTime `db:"syst_created_datetime"`
-	CreationSystemID     sql.NullInt64  `db:"creation_system_id"`
-	CreatedByID          sql.NullString `db:"created_by_id"`
-	SystUpdatedDatetime  mysql.NullTime `db:"syst_updated_datetime"`
-	UpdateSystemID       sql.NullInt64  `db:"update_system_id"`
-	UpdatedByID          sql.NullString `db:"updated_by_id"`
-	PersonStatusID       sql.NullInt64  `db:"person_status_id"`
-	DupeID               sql.NullInt64  `db:"dupe_id"`
-	HandlerID            sql.NullInt64  `db:"handler_id"`
-	IsUneeTAccountNeeded sql.NullInt64  `db:"is_unee_t_account_needed"`
-	UneeTUserTypeID      sql.NullInt64  `db:"unee_t_user_type_id"`
-	CountryCode          sql.NullString `db:"country_code"`
-	Gender               sql.NullInt64  `db:"gender"`
-	SalutationID         sql.NullInt64  `db:"salutation_id"`
-	GivenName            string         `db:"given_name"`
-	MiddleName           sql.NullString `db:"middle_name"`
-	FamilyName           sql.NullString `db:"family_name"`
-	DateOfBirth          mysql.NullTime `db:"date_of_birth"`
-	Alias                sql.NullString `db:"alias"`
-	JobTitle             sql.NullString `db:"job_title"`
-	Organization         sql.NullString `db:"organization"`
-	Email                sql.NullString `db:"email"`
-	Tel1                 sql.NullString `db:"tel_1"`
-	Tel2                 sql.NullString `db:"tel_2"`
-	Whatsapp             sql.NullString `db:"whatsapp"`
-	Linkedin             sql.NullString `db:"linkedin"`
-	Facebook             sql.NullString `db:"facebook"`
-	Adr1                 sql.NullString `db:"adr1"`
-	Adr2                 sql.NullString `db:"adr2"`
-	Adr3                 sql.NullString `db:"adr3"`
-	City                 sql.NullString `db:"City"`
-	ZipPostcode          sql.NullString `db:"zip_postcode"`
-	RegionOrState        sql.NullString `db:"region_or_state"`
-	Country              sql.NullString `db:"country"`
+	ID                   int             `db:"id_person" json:"id"`
+	ExternalID           string          `db:"external_id" json:"external_id,omitempty"`
+	ExternalSystem       string          `db:"external_system" json:"external_system,omitempty"`
+	ExternalTable        string          `db:"external_table" json:"external_table,omitempty"`
+	SystCreatedDatetime  *time.Time      `db:"syst_created_datetime" json:"syst_created_datetime,omitempty"`
+	CreationSystemID     *int            `db:"creation_system_id" json:"creation_system_id,omitempty"`
+	CreatedByID          *string         `db:"created_by_id" json:"created_by_id,omitempty"`
+	SystUpdatedDatetime  *mysql.NullTime `db:"syst_updated_datetime" json:"syst_updated_datetime,omitempty"`
+	UpdateSystemID       *int            `db:"update_system_id" json:"update_system_id,omitempty"`
+	UpdatedByID          *string         `db:"updated_by_id" json:"updated_by_id,omitempty"`
+	PersonStatusID       *int            `db:"person_status_id" json:"person_status_id,omitempty"`
+	DupeID               *int            `db:"dupe_id" json:"dupe_id,omitempty"`
+	HandlerID            *int            `db:"handler_id" json:"handler_id,omitempty"`
+	IsUneeTAccountNeeded *int            `db:"is_unee_t_account_needed" json:"is_unee_t_account_needed,omitempty"`
+	UneeTUserTypeID      *int            `db:"unee_t_user_type_id" json:"unee_t_user_type_id,omitempty"`
+	CountryCode          *string         `db:"country_code" json:"country_code,omitempty"`
+	Gender               *int            `db:"gender" json:"gender,omitempty"`
+	SalutationID         *int            `db:"salutation_id" json:"salutation_id,omitempty"`
+	GivenName            string          `db:"given_name" json:"given_name,omitempty"`
+	MiddleName           *string         `db:"middle_name" json:"middle_name,omitempty"`
+	FamilyName           *string         `db:"family_name" json:"family_name,omitempty"`
+	DateOfBirth          *mysql.NullTime `db:"date_of_birth" json:"date_of_birth,omitempty"`
+	Alias                *string         `db:"alias" json:"alias,omitempty"`
+	JobTitle             *string         `db:"job_title" json:"job_title,omitempty"`
+	Organization         *string         `db:"organization" json:"organization,omitempty"`
+	Email                *string         `db:"email" json:"email,omitempty"`
+	Tel1                 *string         `db:"tel_1" json:"tel_1,omitempty"`
+	Tel2                 *string         `db:"tel_2" json:"tel_2,omitempty"`
+	Whatsapp             *string         `db:"whatsapp" json:"whatsapp,omitempty"`
+	Linkedin             *string         `db:"linkedin" json:"linkedin,omitempty"`
+	Facebook             *string         `db:"facebook" json:"facebook,omitempty"`
+	Adr1                 *string         `db:"adr1" json:"adr_1,omitempty"`
+	Adr2                 *string         `db:"adr2" json:"adr_2,omitempty"`
+	Adr3                 *string         `db:"adr3" json:"adr_3,omitempty"`
+	City                 *string         `db:"City" json:"city,omitempty"`
+	ZipPostcode          *string         `db:"zip_postcode" json:"zip_postcode,omitempty"`
+	RegionOrState        *string         `db:"region_or_state" json:"region_or_state,omitempty"`
+	Country              *string         `db:"country" json:"country,omitempty"`
 }
 
 func (u *person) getperson(db *sqlx.DB) error {

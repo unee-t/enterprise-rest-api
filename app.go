@@ -14,6 +14,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 	"github.com/jmoiron/sqlx"
+	"github.com/tj/go/http/response"
 	"github.com/unee-t/env"
 )
 
@@ -71,7 +72,7 @@ func (a *App) getpersons(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	respondWithJSON(w, http.StatusOK, Persons)
+	response.JSON(w, Persons)
 }
 
 func (a *App) createperson(w http.ResponseWriter, r *http.Request) {
