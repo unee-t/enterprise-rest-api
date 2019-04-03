@@ -12,17 +12,26 @@ func (u *person) getperson(db *sqlx.DB) error {
 }
 
 func (u *person) updateperson(db *sqlx.DB) error {
-	_, err := db.Exec("UPDATE persons SET name=?, age=? WHERE id=?", u.GivenName, u.FamilyName, u.ID)
+	_, err := db.Exec("UPDATE persons SET external_id=?, external_system=?, external_table=?, given_name=?, family_name=? WHERE id_person=?",
+		u.ExternalId,
+		u.ExternalSystem,
+		u.ExternalTable,
+		u.GivenName,
+		u.FamilyName,
+		u.ID)
 	return err
 }
 
 func (u *person) deleteperson(db *sqlx.DB) error {
-	_, err := db.Exec("DELETE FROM persons WHERE id=?", u.ID)
+	_, err := db.Exec("DELETE FROM persons WHERE id_person=?", u.ID)
 	return err
 }
 
 func (u *person) createperson(db *sqlx.DB) error {
-	result, err := db.Exec("insert into persons(given_name, family_name) values(?,?)",
+	result, err := db.Exec("insert into persons(external_id, external_system, external_table, given_name, family_name) values(?,?,?,?,?)",
+		u.ExternalId,
+		u.ExternalSystem,
+		u.ExternalTable,
 		u.GivenName,
 		u.FamilyName)
 	if err != nil {
