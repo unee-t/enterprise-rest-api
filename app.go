@@ -25,7 +25,7 @@ type App struct {
 }
 
 func New() (a App, err error) {
-	connectionString := "root:secret@tcp(localhost:3306)/unee_t_enterprise?multiStatements=true&sql_mode=TRADITIONAL&timeout=5s"
+	connectionString := "root:secret@tcp(localhost:3306)/unee_t_enterprise?multiStatements=true&sql_mode=TRADITIONAL&timeout=5s&parseTime=true"
 	a.DB, err = sqlx.Open("mysql", connectionString)
 	if err != nil {
 		return a, err
