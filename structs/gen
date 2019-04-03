@@ -1,0 +1,2 @@
+# https://github.com/fraenky8/tables-to-go
+~/tmp/tables-to-go/tables-to-go -v -t mysql -d unee_t_enterprise -u root -p secret -of . -pn main
