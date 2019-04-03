@@ -4,7 +4,9 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/apex/log"
 	"github.com/aws/aws-sdk-go-v2/aws/endpoints"
@@ -22,11 +24,7 @@ type App struct {
 }
 
 func New() (a App, err error) {
-	connectionString := "root:secret@tcp(localhost:3306)/unee_t_enterprise?multiStatements=true&sql_mode=TRADITIONAL&timeout=5s&parseTime=true"
-	a.DB, err = sqlx.Open("mysql", connectionString)
-	if err != nil {
-		return a, err
-	}
+
 	cfg, err := external.LoadDefaultAWSConfig(external.WithSharedConfigProfile("uneet-dev"))
 	if err != nil {
 		log.WithError(err).Fatal("setting up credentials")
@@ -36,6 +34,28 @@ func New() (a App, err error) {
 	e, err := env.New(cfg)
 	if err != nil {
 		log.WithError(err).Warn("error getting AWS unee-t env")
+	}
+
+	var connectionString string
+	dbOptions := "?multiStatements=true&sql_mode=TRADITIONAL&timeout=5s&parseTime=true&collation=utf8mb4_unicode_ci"
+
+	if os.Getenv("UP_STAGE") == "" {
+		connectionString = "root:secret@tcp(localhost:3306)/unee_t_enterprise" + dbOptions
+	} else {
+		connectionString = fmt.Sprintf("%s:%s@tcp(%s:3306)/unee_t_enterprise%s",
+			"root",
+			e.GetSecret("MYSQL_ROOT_PASSWORD"),
+			// 			e.GetSecret("UNEE-T_ENTERPRISE_RDS_MASTER_USER"),
+			// 			e.GetSecret("UNEE-T_ENTERPRISE_RDS_MASTER_USER_PASSWORD"),
+			e.Udomain("auroradb"),
+			dbOptions)
+	}
+
+	log.WithField("connection", connectionString).Info("Connecting to RDS")
+
+	a.DB, err = sqlx.Open("mysql", connectionString)
+	if err != nil {
+		return a, err
 	}
 
 	a.Router = mux.NewRouter()

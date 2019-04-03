@@ -43,7 +43,7 @@ func (u *person) createperson(db *sqlx.DB) error {
 }
 
 func getpersons(db *sqlx.DB, startid, count int) (persons []person, err error) {
-	err = db.Select(&persons, "SELECT * FROM persons WHERE id_person >= ? LIMIT ?", startid, count)
+	err = db.Select(&persons, "SELECT * FROM persons WHERE id_person >= ? ORDER BY id_person ASC LIMIT ?", startid, count)
 	if err != nil {
 		return persons, err
 	}

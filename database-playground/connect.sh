@@ -11,6 +11,16 @@ domain() {
 	esac
 }
 
+ssm() {
+if test "$2"
+then
+	aws --profile $1 ssm get-parameters --names $2 --with-decryption --query Parameters[0].Value --output text
+else
+	aws --profile ${1:-uneet-dev} ssm describe-parameters
+fi
+}
+
+
 show_help() {
 cat << EOF
 Usage: ${0##*/} [-p]
@@ -43,9 +53,7 @@ done
 AWS_PROFILE=uneet-$STAGE
 shift "$((OPTIND-1))"   # Discard the options and sentinel --
 
-echo Connecting to ${STAGE^^} $(domain $STAGE)
+echo Connecting to unee_t_enterprise on ${STAGE^^} $(domain $STAGE)
 
-MYSQL_PASSWORD=$(aws --profile $AWS_PROFILE ssm get-parameters --names MYSQL_ROOT_PASSWORD --with-decryption --query Parameters[0].Value --output text)
-MYSQL_USER=$(aws --profile $AWS_PROFILE ssm get-parameters --names MYSQL_USER --with-decryption --query Parameters[0].Value --output text)
-
-mysql -s -h $(domain $STAGE) -P 3306 -u root --password=$MYSQL_PASSWORD unee_t_enterprise
+#mysql -s -h $(domain $STAGE) -P 3306 -u $(ssm $AWS_PROFILE UNEE-T_ENTERPRISE_RDS_MASTER_USER) --password=$(ssm $AWS_PROFILE UNEE-T_ENTERPRISE_RDS_MASTER_USER_PASSWORD) unee_t_enterprise
+mysql -s -h $(domain $STAGE) -P 3306 -u $(ssm $AWS_PROFILE MYSQL_USER) --password=$(ssm $AWS_PROFILE MYSQL_PASSWORD) unee_t_enterprise
