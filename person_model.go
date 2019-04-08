@@ -7,13 +7,13 @@ import (
 )
 
 func (u *person) getperson(db *sqlx.DB) error {
-	err := db.Get(u, "SELECT * FROM persons WHERE id_person=?", u.ID)
+	err := db.Get(u, "SELECT * FROM external_persons WHERE id_person=?", u.ID)
 	return err
 }
 
 func (u *person) updateperson(db *sqlx.DB) error {
-	_, err := db.Exec("UPDATE persons SET external_id=?, external_system=?, external_table=?, given_name=?, family_name=? WHERE id_person=?",
-		u.ExternalId,
+	_, err := db.Exec("UPDATE external_persons SET external_id=?, external_system=?, external_table=?, given_name=?, family_name=? WHERE id_person=?",
+		u.ExternalID,
 		u.ExternalSystem,
 		u.ExternalTable,
 		u.GivenName,
@@ -23,15 +23,16 @@ func (u *person) updateperson(db *sqlx.DB) error {
 }
 
 func (u *person) deleteperson(db *sqlx.DB) error {
-	_, err := db.Exec("DELETE FROM persons WHERE id_person=?", u.ID)
+	_, err := db.Exec("DELETE FROM external_persons WHERE id_person=?", u.ID)
 	return err
 }
 
 func (u *person) createperson(db *sqlx.DB) error {
-	result, err := db.Exec("insert into persons(external_id, external_system, external_table, given_name, family_name) values(?,?,?,?,?)",
-		u.ExternalId,
+	result, err := db.Exec("insert into external_persons(external_id, external_system, external_table, created_by_id, given_name, family_name) values(?,?,?,?,?,?)",
+		u.ExternalID,
 		u.ExternalSystem,
 		u.ExternalTable,
+		u.CreatedByID,
 		u.GivenName,
 		u.FamilyName)
 	if err != nil {
@@ -43,9 +44,12 @@ func (u *person) createperson(db *sqlx.DB) error {
 }
 
 func getpersons(db *sqlx.DB, startid, count int) (persons []person, err error) {
-	err = db.Select(&persons, "SELECT * FROM persons WHERE id_person >= ? ORDER BY id_person ASC LIMIT ?", startid, count)
+	err = db.Select(&persons, "SELECT * FROM external_persons WHERE id_person >= ? ORDER BY id_person ASC LIMIT ?", startid, count)
 	if err != nil {
 		return persons, err
+	}
+	if len(persons) == 0 {
+		return []person{}, nil
 	}
 	return persons, nil
 }

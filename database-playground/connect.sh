@@ -56,4 +56,5 @@ shift "$((OPTIND-1))"   # Discard the options and sentinel --
 echo Connecting to unee_t_enterprise on ${STAGE^^} $(domain $STAGE)
 
 #mysql -s -h $(domain $STAGE) -P 3306 -u $(ssm $AWS_PROFILE UNEE-T_ENTERPRISE_RDS_MASTER_USER) --password=$(ssm $AWS_PROFILE UNEE-T_ENTERPRISE_RDS_MASTER_USER_PASSWORD) unee_t_enterprise
-mysql -s -h $(domain $STAGE) -P 3306 -u $(ssm $AWS_PROFILE MYSQL_USER) --password=$(ssm $AWS_PROFILE MYSQL_PASSWORD) unee_t_enterprise
+#mysql -s -h $(domain $STAGE) -P 3306 -u $(ssm $AWS_PROFILE MYSQL_USER) --password=$(ssm $AWS_PROFILE MYSQL_PASSWORD) unee_t_enterprise
+mysql -s -h $(domain $STAGE) -P 3306 -u root --password=$(ssm $AWS_PROFILE MYSQL_ROOT_PASSWORD) unee_t_enterprise

@@ -1,30 +1,32 @@
 package main
 
-import "time"
+import (
+	"time"
+)
 
 type person struct {
 	ID                   int        `db:"id_person" json:"id"`
-	ExternalId           string     `db:"external_id" json:"external_id"`
+	ExternalID           string     `db:"external_id" json:"external_id"`
 	ExternalSystem       string     `db:"external_system" json:"external_system"`
 	ExternalTable        string     `db:"external_table" json:"external_table"`
 	SystCreatedDatetime  *time.Time `db:"syst_created_datetime" json:"syst_created_datetime,omitempty"`
-	CreationSystemId     *int       `db:"creation_system_id" json:"creation_system_id,omitempty"`
-	CreatedById          *string    `db:"created_by_id" json:"created_by_id,omitempty"`
+	CreationSystemID     *string    `db:"creation_system_id" json:"creation_system_id,omitempty"`
+	CreatedByID          int        `db:"created_by_id" json:"created_by_id"`
 	CreationMethod       *string    `db:"creation_method" json:"creation_method,omitempty"`
 	SystUpdatedDatetime  *time.Time `db:"syst_updated_datetime" json:"syst_updated_datetime,omitempty"`
-	UpdateSystemId       *int       `db:"update_system_id" json:"update_system_id,omitempty"`
-	UpdatedById          *string    `db:"updated_by_id" json:"updated_by_id,omitempty"`
+	UpdateSystemID       *string    `db:"update_system_id" json:"update_system_id,omitempty"`
+	UpdatedByID          *int       `db:"updated_by_id" json:"updated_by_id,omitempty"`
 	UpdateMethod         *string    `db:"update_method" json:"update_method,omitempty"`
-	PersonStatusId       *int       `db:"person_status_id" json:"person_status_id,omitempty"`
-	DupeId               *int       `db:"dupe_id" json:"dupe_id,omitempty"`
-	HandlerId            *int       `db:"handler_id" json:"handler_id,omitempty"`
+	PersonStatusID       *int       `db:"person_status_id" json:"person_status_id,omitempty"`
+	DupeID               *int       `db:"dupe_id" json:"dupe_id,omitempty"`
+	HandlerID            *int       `db:"handler_id" json:"handler_id,omitempty"`
 	IsUneeTAccountNeeded *int       `db:"is_unee_t_account_needed" json:"is_unee_t_account_needed,omitempty"`
-	UneeTUserTypeId      *int       `db:"unee_t_user_type_id" json:"unee_t_user_type_id,omitempty"`
+	UneeTUserTypeID      *int       `db:"unee_t_user_type_id" json:"unee_t_user_type_id,omitempty"`
 	CountryCode          *string    `db:"country_code" json:"country_code,omitempty"`
 	Gender               *int       `db:"gender" json:"gender,omitempty"`
-	SalutationId         *int       `db:"salutation_id" json:"salutation_id,omitempty"`
+	SalutationID         *int       `db:"salutation_id" json:"salutation_id,omitempty"`
 	GivenName            string     `db:"given_name" json:"given_name"`
-	MiddleName           *string    `db:"middle_name" json:"middle_name,omitempty"`
+	Middlename           *string    `db:"middle_name" json:"mi_ddle_name,omitempty"`
 	FamilyName           *string    `db:"family_name" json:"family_name,omitempty"`
 	DateOfBirth          *time.Time `db:"date_of_birth" json:"date_of_birth,omitempty"`
 	Alias                *string    `db:"alias" json:"alias,omitempty"`
