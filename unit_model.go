@@ -31,7 +31,6 @@ func (u *UnteApiAddUnit) createunit(db *sqlx.DB) error {
 	if err != nil {
 		return err
 	}
-	u.IDUnteApiAddUnit = int(id)
-	err = db.Get(u, "SELECT * FROM unte_api_add_unit WHERE id_unte_api_add_unit=?", u.IDUnteApiAddUnit)
+	err = db.Get(u, "SELECT * FROM unte_api_add_unit WHERE id_unte_api_add_unit=?", int(id))
 	return err
 }
