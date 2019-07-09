@@ -37,7 +37,7 @@ func New() (a App, err error) {
 	}
 
 	var connectionString string
-	dbOptions := "?multiStatements=true&sql_mode=TRADITIONAL&timeout=5s&parseTime=true&collation=utf8mb4_unicode_ci"
+	dbOptions := "?multiStatements=true&sql_mode=TRADITIONAL&timeout=5s&parseTime=true&collation=utf8mb4_unicode_520_ci"
 
 	if os.Getenv("UP_STAGE") == "" {
 		connectionString = "root:secret@tcp(localhost:3306)/unee_t_enterprise" + dbOptions
@@ -45,8 +45,8 @@ func New() (a App, err error) {
 		connectionString = fmt.Sprintf("%s:%s@tcp(%s:3306)/unee_t_enterprise%s",
 			"root",
 			e.GetSecret("MYSQL_ROOT_PASSWORD"),
-			// 			e.GetSecret("UNEE-T_ENTERPRISE_RDS_MASTER_USER"),
-			// 			e.GetSecret("UNEE-T_ENTERPRISE_RDS_MASTER_USER_PASSWORD"),
+			// e.GetSecret("UNEE-T_ENTERPRISE_RDS_MASTER_USER"),
+			// e.GetSecret("UNEE-T_ENTERPRISE_RDS_MASTER_USER_PASSWORD"),
 			e.Udomain("auroradb"),
 			dbOptions)
 	}
@@ -70,6 +70,8 @@ func (a *App) initializeRoutes() {
 	a.Router.HandleFunc("/person/{id:[0-9]+}", a.getperson).Methods("GET")
 	a.Router.HandleFunc("/person/{id:[0-9]+}", a.updateperson).Methods("PUT")
 	a.Router.HandleFunc("/person/{id:[0-9]+}", a.deleteperson).Methods("DELETE")
+	// https://github.com/unee-t/enterprise-rest-api/issues/3
+	a.Router.HandleFunc("/unit/{id}", a.getunit).Methods("GET")
 }
 
 func respondWithError(w http.ResponseWriter, code int, message string) {

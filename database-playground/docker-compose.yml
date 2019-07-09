@@ -3,15 +3,13 @@ version: "3"
 services:
   mariadb:
     image: mariadb
-    command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
     environment:
       MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: unee_t_enterprise
     ports:
       - 3306:3306
     volumes:
       - ./sql/:/docker-entrypoint-initdb.d/
-    networks:
-      - network
 
   adminer:
     image: adminer
@@ -23,9 +21,3 @@ services:
       ADMINER_DEFAULT_DB_HOST: mariadb
     ports:
       - 8082:8080
-    networks:
-      - network
-
-networks:
-  network:
-    driver: bridge
