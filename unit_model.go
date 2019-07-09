@@ -14,14 +14,22 @@ func (u *UnteApiAddUnit) getunit(db *sqlx.DB) error {
 }
 
 func (u *UnteApiAddUnit) createunit(db *sqlx.DB) error {
-	_, err := db.NamedExec(`INSERT INTO unte_api_add_unit (external_id,
+	result, err := db.NamedExec(`INSERT INTO unte_api_add_unit (external_id,
 	designation,
+	request_id,
 	organization_key)
 	VALUES (:external_id,
 	:designation,
+	uuid(),
 	:organization_key)`, u)
 	if err != nil {
 		return err
 	}
+	id, err := result.LastInsertId()
+	if err != nil {
+		return err
+	}
+	u.IDUnteApiAddUnit = int(id)
+	err = db.Get(u, "SELECT * FROM unte_api_add_unit WHERE id_unte_api_add_unit=?", u.IDUnteApiAddUnit)
 	return err
 }
