@@ -71,7 +71,6 @@ func (a *App) initializeRoutes() {
 	a.Router.HandleFunc("/person/{id:[0-9]+}", a.updateperson).Methods("PUT")
 	a.Router.HandleFunc("/person/{id:[0-9]+}", a.deleteperson).Methods("DELETE")
 	// https://github.com/unee-t/enterprise-rest-api/issues/3
-	a.Router.HandleFunc("/unit/{id}", a.getunit).Methods("GET")
 	a.Router.HandleFunc("/unit", a.createunit).Methods("POST")
 }
 
