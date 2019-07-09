@@ -16,11 +16,17 @@ func (u *UnteApiAddUnit) getunit(db *sqlx.DB) error {
 func (u *UnteApiAddUnit) createunit(db *sqlx.DB) error {
 	result, err := db.NamedExec(`INSERT INTO unte_api_add_unit (external_id,
 	designation,
+	unee_t_unit_type,
+	country_code,
+	mgt_cny_default_assignee,
 	request_id,
 	syst_created_datetime,
 	organization_key)
 	VALUES (:external_id,
 	:designation,
+	:unee_t_unit_type,
+	:country_code,
+	:mgt_cny_default_assignee,
 	uuid(),
 	now(),
 	:organization_key)`, u)
