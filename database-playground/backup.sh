@@ -2,6 +2,10 @@
 
 STAGE=dev
 
+ssm() {
+	aws --profile $1 ssm get-parameters --names $2 --with-decryption --query Parameters[0].Value --output text
+}
+
 show_help() {
 cat << EOF
 Usage: ${0##*/} [-p]
@@ -39,11 +43,15 @@ done
 AWS_PROFILE=uneet-$STAGE
 shift "$((OPTIND-1))"   # Discard the options and sentinel --
 
-if test $AWS_PROFILE == uneet-localhost
-then
-	echo mongorestore -h 127.0.0.1 --drop --port 27017 $dir
-else
-	export MYSQL_ROOT_PASSWORD=$(aws --profile $AWS_PROFILE ssm get-parameters --names MYSQL_ROOT_PASSWORD --with-decryption --query Parameters[0].Value --output text)
-	export MYSQL_HOST=$(aws --profile $AWS_PROFILE ssm get-parameters --names MYSQL_HOST --with-decryption --query Parameters[0].Value --output text)
-	mysqldump -f --set-gtid-purged=OFF --single-transaction --skip-lock-tables --column-statistics=0 -R -h $MYSQL_HOST -P 3306 -u root --password=$MYSQL_ROOT_PASSWORD unee_t_enterprise > $STAGE-enterprise-backup-$(date +%s).sql
-fi
+export MYSQL_ROOT_PASSWORD=$(ssm $AWS_PROFILE MYSQL_ROOT_PASSWORD)
+export MYSQL_HOST=$(ssm $AWS_PROFILE MYSQL_HOST)
+
+output=./sql/prime.sql
+#output=$STAGE-enterprise-backup-$(date +%s).sql
+
+# Get structure, no data
+mysqldump --no-data --set-gtid-purged=OFF --single-transaction --skip-lock-tables --column-statistics=0 -R \
+	-h $MYSQL_HOST -P 3306 -u root --password=$MYSQL_ROOT_PASSWORD unee_t_enterprise > $output
+# Only get data from tables we need
+mysqldump --set-gtid-purged=OFF --column-statistics=0 -h $MYSQL_HOST -P 3306 -u root --password=$MYSQL_ROOT_PASSWORD \
+	unee_t_enterprise ut_unit_types property_groups_countries ut_map_external_source_users unte_api_keys ut_map_external_source_units >> $output
