@@ -37,5 +37,5 @@ func (a *App) createunit(w http.ResponseWriter, r *http.Request) {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
-	respondWithJSON(w, http.StatusCreated, map[string]*string{"request_id": u.RequestID})
+	respondWithJSON(w, http.StatusCreated, u)
 }
