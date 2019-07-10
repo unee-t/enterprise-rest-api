@@ -6,7 +6,7 @@ import (
 
 type UnteApiAddUnit struct {
 	IDUnteApiAddUnit        int        `db:"id_unte_api_add_unit" json:"id_unte_api_add_unit,omitempty"`
-	RequestID               *string    `db:"request_id" json:"request_id,omitempty"`
+	RequestID               string     `db:"request_id" json:"request_id,omitempty"`
 	ExternalID              string     `db:"external_id" json:"external_id,omitempty"`
 	ExternalSystemID        string     `db:"external_system_id" json:"external_system_id,omitempty"`
 	ExternalTable           string     `db:"external_table" json:"external_table,omitempty"`

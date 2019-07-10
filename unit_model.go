@@ -7,12 +7,19 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-func (u *UnteApiAddUnit) getunit(db *sqlx.DB) error {
-	log.WithField("external_id", u.ExternalID).Info("select")
-	err := db.Get(u, "SELECT * FROM unte_api_add_unit WHERE external_id=?", u.ExternalID)
+// https://github.com/unee-t/enterprise-rest-api/issues/10
+func (u *UnteApiAddUnit) getunit(db *sqlx.DB) (err error) {
+	if u.ExternalID != "" {
+		log.WithField("external_id", u.ExternalID).Info("select")
+		err = db.Get(u, "SELECT * FROM unte_api_add_unit WHERE external_id=?", u.ExternalID)
+	} else if u.RequestID != "" {
+		log.WithField("request_id", u.RequestID).Info("select")
+		err = db.Get(u, "SELECT * FROM unte_api_add_unit WHERE request_id=?", u.RequestID)
+	}
 	return err
 }
 
+// https://github.com/unee-t/enterprise-rest-api/issues/3
 func (u *UnteApiAddUnit) createunit(db *sqlx.DB) error {
 	result, err := db.NamedExec(`INSERT INTO unte_api_add_unit (
 external_id,

@@ -1,5 +1,3 @@
-// app.go
-
 package main
 
 import (
@@ -18,13 +16,11 @@ import (
 )
 
 type App struct {
-	Router         *mux.Router
-	DB             *sqlx.DB
-	APIAccessToken string
+	Router *mux.Router
+	DB     *sqlx.DB
 }
 
 func New() (a App, err error) {
-
 	cfg, err := external.LoadDefaultAWSConfig(external.WithSharedConfigProfile("uneet-dev"))
 	if err != nil {
 		log.WithError(err).Fatal("setting up credentials")
@@ -35,10 +31,8 @@ func New() (a App, err error) {
 	if err != nil {
 		log.WithError(err).Warn("error getting AWS unee-t env")
 	}
-
 	var connectionString string
 	dbOptions := "?multiStatements=true&sql_mode=TRADITIONAL&timeout=5s&parseTime=true&collation=utf8mb4_unicode_520_ci"
-
 	if os.Getenv("UP_STAGE") == "" {
 		connectionString = "root:secret@tcp(localhost:3306)/unee_t_enterprise" + dbOptions
 	} else {
@@ -50,28 +44,19 @@ func New() (a App, err error) {
 			e.Udomain("auroradb"),
 			dbOptions)
 	}
-
-	log.WithField("connection", connectionString).Info("Connecting to RDS")
-
+	log.WithField("connection", connectionString).Info("Connecting to database")
 	a.DB, err = sqlx.Open("mysql", connectionString)
 	if err != nil {
 		return a, err
 	}
-
 	a.Router = mux.NewRouter()
 	a.initializeRoutes()
-	a.APIAccessToken = e.GetSecret("API_ACCESS_TOKEN")
 	return a, err
 }
 
 func (a *App) initializeRoutes() {
-	a.Router.HandleFunc("/persons", a.getpersons).Methods("GET")
-	a.Router.HandleFunc("/person", a.createperson).Methods("POST")
-	a.Router.HandleFunc("/person/{id:[0-9]+}", a.getperson).Methods("GET")
-	a.Router.HandleFunc("/person/{id:[0-9]+}", a.updateperson).Methods("PUT")
-	a.Router.HandleFunc("/person/{id:[0-9]+}", a.deleteperson).Methods("DELETE")
-	// https://github.com/unee-t/enterprise-rest-api/issues/3
 	a.Router.HandleFunc("/unit", a.createunit).Methods("POST")
+	a.Router.HandleFunc("/unitinfo", a.unitcreatedinfo).Methods("POST")
 }
 
 func respondWithError(w http.ResponseWriter, code int, message string) {

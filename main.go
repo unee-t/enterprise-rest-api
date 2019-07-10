@@ -7,7 +7,6 @@ import (
 	"os"
 
 	"github.com/apex/log"
-	"github.com/unee-t/env"
 )
 
 func main() {
@@ -22,7 +21,7 @@ func main() {
 		}
 
 	} else {
-		if err := http.ListenAndServe(":"+os.Getenv("PORT"), env.Protect(a.Router, a.APIAccessToken)); err != nil {
+		if err := http.ListenAndServe(":"+os.Getenv("PORT"), a.Router); err != nil {
 			log.WithError(err).Fatal("error listening")
 		}
 	}
