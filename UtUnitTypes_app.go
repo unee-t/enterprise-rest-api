@@ -7,7 +7,8 @@ import (
 )
 
 func (a *App) getUnitTypes(w http.ResponseWriter, r *http.Request) {
-	UnitTypes, err := getUnitTypes(a.DB)
+	_, all := r.URL.Query()["all"]
+	UnitTypes, err := getUnitTypes(a.DB, all)
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
 		return
