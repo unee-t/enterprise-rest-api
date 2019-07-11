@@ -57,6 +57,7 @@ func New() (a App, err error) {
 func (a *App) initializeRoutes() {
 	a.Router.HandleFunc("/unit", a.createunit).Methods("POST")
 	a.Router.HandleFunc("/unitinfo", a.unitcreatedinfo).Methods("POST")
+	a.Router.HandleFunc("/countries", a.getcountries).Methods("GET")
 }
 
 func respondWithError(w http.ResponseWriter, code int, message string) {
