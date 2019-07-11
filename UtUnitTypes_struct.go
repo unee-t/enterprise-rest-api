@@ -14,7 +14,7 @@ type UtUnitTypes struct {
 	IsLevel1            *int       `db:"is_level_1" json:"is_level_1,omitempty"`
 	IsLevel2            *int       `db:"is_level_2" json:"is_level_2,omitempty"`
 	IsLevel3            *int       `db:"is_level_3" json:"is_level_3,omitempty"`
-	IsObsolete          *int       `db:"is_obsolete" json:"is_obsolete,omitempty"`
+	IsObsolete          *int       `db:"is_obsolete" json:"inactive,omitempty"`
 	Designation         string     `db:"designation" json:"designation,omitempty"`
 	Description         *string    `db:"description" json:"description,omitempty"`
 }
