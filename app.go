@@ -58,6 +58,7 @@ func (a *App) initializeRoutes() {
 	a.Router.HandleFunc("/unit", a.createunit).Methods("POST")
 	a.Router.HandleFunc("/unitinfo", a.unitcreatedinfo).Methods("POST")
 	a.Router.HandleFunc("/countries", a.getcountries).Methods("GET")
+	a.Router.HandleFunc("/unittypes", a.getUnitTypes).Methods("GET")
 }
 
 func respondWithError(w http.ResponseWriter, code int, message string) {
